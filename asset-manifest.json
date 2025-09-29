@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/clinicaplenamente/static/css/main.e6c13ad2.css",
+    "main.js": "/clinicaplenamente/static/js/main.1046b007.js",
+    "static/js/453.baaa2e5b.chunk.js": "/clinicaplenamente/static/js/453.baaa2e5b.chunk.js",
+    "index.html": "/clinicaplenamente/index.html",
+    "main.e6c13ad2.css.map": "/clinicaplenamente/static/css/main.e6c13ad2.css.map",
+    "main.1046b007.js.map": "/clinicaplenamente/static/js/main.1046b007.js.map",
+    "453.baaa2e5b.chunk.js.map": "/clinicaplenamente/static/js/453.baaa2e5b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.1046b007.js"
+  ]
+}
