@@ -1,9 +1,5 @@
-// import logo from './logo.svg';
-// import './App.css';
-// import Button from './components/Button/index.ts';
-
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Layout from './components/Layout/index.ts';

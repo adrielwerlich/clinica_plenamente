@@ -1,5 +1,8 @@
 import React from 'react';
-import { Box, Container, Typography, Paper, Grid } from '@mui/material';
+import { Box, Container, Typography, Paper, Grid, Link } from '@mui/material';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import { Button } from '@mui/material';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 
 const Home: React.FC = () => {
   return (
@@ -22,7 +25,6 @@ const Home: React.FC = () => {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.4)', // Dark overlay for text readability
             zIndex: 1,
           }
         }}>
@@ -49,7 +51,7 @@ const Home: React.FC = () => {
             O Valor do Tratamento Psicológico
           </Typography>
           <Grid container spacing={4} sx={{ mt: 4 }}>
-            <Grid  size={6}>
+            <Grid size={6}>
               <Paper sx={{ p: 3, height: '100%' }}>
                 <Typography variant="h5" gutterBottom>
                   Autoconhecimento
@@ -60,7 +62,7 @@ const Home: React.FC = () => {
                 </Typography>
               </Paper>
             </Grid>
-            <Grid   size={6}>
+            <Grid size={6}>
               <Paper sx={{ p: 3, height: '100%' }}>
                 <Typography variant="h5" gutterBottom>
                   Ferramentas de Enfrentamento
@@ -71,7 +73,7 @@ const Home: React.FC = () => {
                 </Typography>
               </Paper>
             </Grid>
-            <Grid   size={6}>
+            <Grid size={6}>
               <Paper sx={{ p: 3, height: '100%' }}>
                 <Typography variant="h5" gutterBottom>
                   Terapia Cognitiva para Depressão
@@ -82,7 +84,7 @@ const Home: React.FC = () => {
                 </Typography>
               </Paper>
             </Grid>
-            <Grid   size={6}>
+            <Grid size={6}>
               <Paper sx={{ p: 3, height: '100%' }}>
                 <Typography variant="h5" gutterBottom>
                   Tratamento para TEPT
@@ -93,7 +95,7 @@ const Home: React.FC = () => {
                 </Typography>
               </Paper>
             </Grid>
-            <Grid   size={6} component="div">
+            <Grid size={6} component="div">
               <Paper sx={{ p: 3, height: '100%' }}>
                 <Typography variant="h5" gutterBottom>
                   Terapia para Ansiedade
@@ -104,7 +106,7 @@ const Home: React.FC = () => {
                 </Typography>
               </Paper>
             </Grid>
-            <Grid   size={6}>
+            <Grid size={6}>
               <Paper sx={{ p: 3, height: '100%' }}>
                 <Typography variant="h5" gutterBottom>
                   Transtornos de Personalidade
@@ -170,17 +172,53 @@ const Home: React.FC = () => {
             Entre em Contato
           </Typography>
           <Grid container spacing={4} sx={{ mt: 4 }}>
-            <Grid item size={6}>
+            <Grid size={6} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
               <Typography variant="h6" gutterBottom>
-                Telefone
+                What'sApp
               </Typography>
-              <Typography>12 93300-5814</Typography>
+              <Button
+                component={Link}
+                href="https://wa.me/5512933005814?text=Olá!%20Gostaria%20de%20agendar%20uma%20consulta."
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<WhatsAppIcon />}
+                variant="outlined"
+                sx={{
+                  color: 'white',
+                  borderColor: 'white',
+                  '&:hover': {
+                    borderColor: '#25D366',
+                    backgroundColor: '#25D366',
+                    color: 'white'
+                  }
+                }}
+              >
+                12 93300-5814
+              </Button>
             </Grid>
-            <Grid item size={6}>
+            <Grid size={6} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
               <Typography variant="h6" gutterBottom>
-                Email
+                Redes sociais
               </Typography>
-              <Typography>contato@clinicaplenamente.com.br</Typography>
+                <Button
+                component={Link}
+                href="https://www.instagram.com/plenamente_online/"
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<InstagramIcon />}
+                variant="outlined"
+                sx={{
+                  color: 'white',
+                  borderColor: 'white',
+                  '&:hover': {
+                    borderColor: '#E4405F',
+                    backgroundColor: '#E4405F',
+                    color: 'white'
+                  }
+                }}
+              >
+                Siga no Insta
+              </Button>
             </Grid>
           </Grid>
         </Container>
