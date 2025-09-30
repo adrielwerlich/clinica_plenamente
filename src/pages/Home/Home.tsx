@@ -31,13 +31,27 @@ const Home: React.FC = () => {
         <Container maxWidth="lg">
           <Typography variant="h1" component="h1" gutterBottom align="center" sx={{
             color: 'white',
-            fontFamily: '"Dancing Script", "Brush Script MT", cursive'
+            fontFamily: '"Dancing Script", "Brush Script MT", cursive',
+            fontSize: {
+              xs: '2rem',
+              sm: '3rem',
+              md: '4rem',
+              lg: '5rem',
+              xl: '6rem'
+            }
           }}>
             Bem-vindos à Clínica Plenamente
           </Typography>
           <Typography variant="h3" component="p" align="center" sx={{
             mt: 2, color: 'white',
-            fontFamily: '"Dancing Script", "Brush Script MT", cursive'
+            fontFamily: '"Dancing Script", "Brush Script MT", cursive',
+            fontSize: {
+              xs: '1.2rem',
+              sm: '1.5rem',
+              md: '2rem',
+              lg: '2.5rem',
+              xl: '3rem'
+            }
           }}>
             Cuidando da sua saúde mental com profissionalismo e dedicação
           </Typography>
@@ -47,16 +61,48 @@ const Home: React.FC = () => {
       {/* Treatment Section */}
       <Box id="treatment" sx={{ minHeight: '100vh', py: 8, bgcolor: 'background.default' }}>
         <Container maxWidth="lg">
-          <Typography variant="h3" component="h2" gutterBottom align="center">
+          <Typography variant="h3" component="h2" gutterBottom align="center"
+            sx={{
+              fontSize: {
+                xs: '1.2rem',
+                sm: '1.5rem',
+                md: '2rem',
+                lg: '2.5rem',
+                xl: '3rem'
+              }
+            }}
+          >
             O Valor do Tratamento Psicológico
           </Typography>
           <Grid container spacing={4} sx={{ mt: 4 }}>
             <Grid size={6}>
               <Paper sx={{ p: 3, height: '100%' }}>
-                <Typography variant="h5" gutterBottom>
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  sx={{
+                    fontSize: {
+                      xs: '1.1rem',
+                      sm: '1.3rem',
+                      md: '1.5rem',
+                      lg: '1.8rem',
+                      xl: '2rem'
+                    }
+                  }}
+                >
                   Autoconhecimento
                 </Typography>
-                <Typography>
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: '0.9rem',
+                      sm: '1rem',
+                      md: '1.1rem',
+                      lg: '1.2rem',
+                      xl: '1.3rem'
+                    }
+                  }}
+                >
                   O tratamento psicológico oferece um espaço seguro para explorar seus pensamentos,
                   sentimentos e comportamentos, promovendo maior autoconhecimento.
                 </Typography>
@@ -64,10 +110,30 @@ const Home: React.FC = () => {
             </Grid>
             <Grid size={6}>
               <Paper sx={{ p: 3, height: '100%' }}>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" gutterBottom
+                  sx={{
+                    fontSize: {
+                      xs: '1.1rem',
+                      sm: '1.3rem',
+                      md: '1.5rem',
+                      lg: '1.8rem',
+                      xl: '2rem'
+                    }
+                  }}
+                >
                   Ferramentas de Enfrentamento
                 </Typography>
-                <Typography>
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: '0.9rem',
+                      sm: '1rem',
+                      md: '1.1rem',
+                      lg: '1.2rem',
+                      xl: '1.3rem'
+                    }
+                  }}
+                >
                   Desenvolva estratégias eficazes para lidar com desafios do dia a dia e
                   situações estressantes de forma mais saudável.
                 </Typography>
@@ -75,10 +141,30 @@ const Home: React.FC = () => {
             </Grid>
             <Grid size={6}>
               <Paper sx={{ p: 3, height: '100%' }}>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" gutterBottom
+                  sx={{
+                    fontSize: {
+                      xs: '1.1rem',
+                      sm: '1.3rem',
+                      md: '1.5rem',
+                      lg: '1.8rem',
+                      xl: '2rem'
+                    }
+                  }}
+                >
                   Terapia Cognitiva para Depressão
                 </Typography>
-                <Typography>
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: '0.9rem',
+                      sm: '1rem',
+                      md: '1.1rem',
+                      lg: '1.2rem',
+                      xl: '1.3rem'
+                    }
+                  }}
+                >
                   A terapia cognitivo-comportamental ajuda a identificar e modificar padrões de
                   pensamento negativos, oferecendo ferramentas eficazes no tratamento da depressão.
                 </Typography>
@@ -86,10 +172,30 @@ const Home: React.FC = () => {
             </Grid>
             <Grid size={6}>
               <Paper sx={{ p: 3, height: '100%' }}>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" gutterBottom
+                  sx={{
+                    fontSize: {
+                      xs: '1.1rem',
+                      sm: '1.3rem',
+                      md: '1.5rem',
+                      lg: '1.8rem',
+                      xl: '2rem'
+                    }
+                  }}
+                >
                   Tratamento para TEPT
                 </Typography>
-                <Typography>
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: '0.9rem',
+                      sm: '1rem',
+                      md: '1.1rem',
+                      lg: '1.2rem',
+                      xl: '1.3rem'
+                    }
+                  }}
+                >
                   Terapias especializadas para Transtorno de Estresse Pós-Traumático,
                   ajudando na superação de traumas e na recuperação da qualidade de vida.
                 </Typography>
@@ -97,10 +203,30 @@ const Home: React.FC = () => {
             </Grid>
             <Grid size={6} component="div">
               <Paper sx={{ p: 3, height: '100%' }}>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" gutterBottom
+                  sx={{
+                    fontSize: {
+                      xs: '1.1rem',
+                      sm: '1.3rem',
+                      md: '1.5rem',
+                      lg: '1.8rem',
+                      xl: '2rem'
+                    }
+                  }}
+                >
                   Terapia para Ansiedade
                 </Typography>
-                <Typography>
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: '0.9rem',
+                      sm: '1rem',
+                      md: '1.1rem',
+                      lg: '1.2rem',
+                      xl: '1.3rem'
+                    }
+                  }}
+                >
                   Técnicas comprovadas para o manejo da ansiedade, incluindo relaxamento,
                   reestruturação cognitiva e exposição gradual para reduzir sintomas ansiosos.
                 </Typography>
@@ -108,10 +234,30 @@ const Home: React.FC = () => {
             </Grid>
             <Grid size={6}>
               <Paper sx={{ p: 3, height: '100%' }}>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h5" gutterBottom
+                  sx={{
+                    fontSize: {
+                      xs: '1.1rem',
+                      sm: '1.3rem',
+                      md: '1.5rem',
+                      lg: '1.8rem',
+                      xl: '2rem'
+                    }
+                  }}
+                >
                   Transtornos de Personalidade
                 </Typography>
-                <Typography>
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: '0.9rem',
+                      sm: '1rem',
+                      md: '1.1rem',
+                      lg: '1.2rem',
+                      xl: '1.3rem'
+                    }
+                  }}
+                >
                   Tratamento especializado para transtornos de personalidade, focando no
                   desenvolvimento de habilidades interpessoais e regulação emocional.
                 </Typography>
@@ -124,39 +270,117 @@ const Home: React.FC = () => {
       {/* Mental Health Section */}
       <Box id="mental-health" sx={{ minHeight: '50vh', py: 8, bgcolor: 'grey.50' }}>
         <Container maxWidth="lg">
-          <Typography variant="h3" component="h2" gutterBottom align="center">
+          <Typography variant="h3" component="h2" gutterBottom align="center"
+            sx={{
+              fontSize: {
+                xs: '1.2rem',
+                sm: '1.5rem',
+                md: '2rem',
+                lg: '2.5rem',
+                xl: '3rem'
+              }
+            }}
+          >
             A Importância da Saúde Mental
           </Typography>
-          <Typography variant="h6" component="p" align="center" sx={{ mt: 4, mb: 4 }}>
+          <Typography variant="h6" component="p" align="center" sx={{
+            mt: 4, mb: 4, fontSize: {
+              xs: '0.9rem',  // mobile
+              sm: '1rem',    // small tablet
+              md: '1.1rem',  // tablet
+              lg: '1.2rem',  // desktop
+              xl: '1.3rem'   // large desktop
+            }
+          }}>
             A saúde mental é fundamental para o bem-estar geral e qualidade de vida
           </Typography>
           <Grid container spacing={4}>
-            <Grid size={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <Paper sx={{ p: 3, textAlign: 'center' }}>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" gutterBottom
+                  sx={{
+                    fontSize: {
+                      xs: '1.1rem',  // mobile
+                      sm: '1.3rem',  // small tablet
+                      md: '1.5rem',  // tablet
+                      lg: '1.8rem',  // desktop
+                      xl: '2rem'     // large desktop
+                    }
+                  }}
+                >
                   Relacionamentos
                 </Typography>
-                <Typography>
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: '0.9rem',  // mobile
+                      sm: '1rem',    // small tablet
+                      md: '1.1rem',  // tablet
+                      lg: '1.2rem',  // desktop
+                      xl: '1.3rem'   // large desktop
+                    }
+                  }}
+                >
                   Uma mente saudável contribui para relacionamentos mais satisfatórios
                 </Typography>
               </Paper>
             </Grid>
-            <Grid size={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <Paper sx={{ p: 3, textAlign: 'center' }}>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" gutterBottom
+                  sx={{
+                    fontSize: {
+                      xs: '1.1rem', 
+                      sm: '1.3rem', 
+                      md: '1.5rem', 
+                      lg: '1.8rem', 
+                      xl: '2rem'    
+                    }
+                  }}
+                >
                   Produtividade
                 </Typography>
-                <Typography>
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: '0.9rem', 
+                      sm: '1rem',   
+                      md: '1.1rem', 
+                      lg: '1.2rem', 
+                      xl: '1.3rem'  
+                    }
+                  }}
+                >
                   O equilíbrio mental melhora o foco e a capacidade de trabalho
                 </Typography>
               </Paper>
             </Grid>
-            <Grid size={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <Paper sx={{ p: 3, textAlign: 'center' }}>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" gutterBottom
+                  sx={{
+                    fontSize: {
+                      xs: '1.1rem', 
+                      sm: '1.3rem', 
+                      md: '1.5rem', 
+                      lg: '1.8rem', 
+                      xl: '2rem'    
+                    }
+                  }}
+                >
                   Qualidade de Vida
                 </Typography>
-                <Typography>
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: '0.9rem', 
+                      sm: '1rem',   
+                      md: '1.1rem', 
+                      lg: '1.2rem', 
+                      xl: '1.3rem'  
+                    }
+                  }}
+                >
                   Cuidar da mente promove maior satisfação e felicidade
                 </Typography>
               </Paper>
@@ -200,7 +424,7 @@ const Home: React.FC = () => {
               <Typography variant="h6" gutterBottom>
                 Redes sociais
               </Typography>
-                <Button
+              <Button
                 component={Link}
                 href="https://www.instagram.com/plenamente_online/"
                 target="_blank"
