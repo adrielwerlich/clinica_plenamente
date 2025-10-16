@@ -85,6 +85,7 @@ const Home: React.FC = () => {
               <OrbitControls
                 enableZoom={false}
                 enablePan={false}
+                enableRotate={false}
                 autoRotate={true}
                 autoRotateSpeed={0.5}
               />
