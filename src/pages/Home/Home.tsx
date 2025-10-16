@@ -1,8 +1,52 @@
-import React from 'react';
+import React, { Suspense, useEffect, useRef } from 'react';
 import { Box, Container, Typography, Paper, Grid, Link } from '@mui/material';
-import InstagramIcon from '@mui/icons-material/Instagram';
 import { Button } from '@mui/material';
+import InstagramIcon from '@mui/icons-material/Instagram';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, useGLTF, Environment } from '@react-three/drei';
+import { useFrame, useThree } from '@react-three/fiber';
+
+const Model = () => {
+  const { scene } = useGLTF('/models/brain2.glb');
+
+  return <primitive object={scene} scale={1} position={[0, 0, 0]} />;
+};
+
+const CameraPositionLogger = () => {
+  const { camera } = useThree();
+  const lastPosition = useRef({ x: 0, y: 0, z: 0 });
+  const timeout = useRef<NodeJS.Timeout | null>(null);
+
+  useFrame(() => {
+    const currentPos = camera.position;
+
+    // Check if camera moved
+    if (
+      Math.abs(currentPos.x - lastPosition.current.x) > 0.01 ||
+      Math.abs(currentPos.y - lastPosition.current.y) > 0.01 ||
+      Math.abs(currentPos.z - lastPosition.current.z) > 0.01
+    ) {
+      // Clear previous timeout
+      if (timeout.current) clearTimeout(timeout.current);
+
+      // Set new timeout to log position after camera stops
+      timeout.current = setTimeout(() => {
+        console.log('Camera position:', {
+          x: Math.round(currentPos.x * 100) / 100,
+          y: Math.round(currentPos.y * 100) / 100,
+          z: Math.round(currentPos.z * 100) / 100
+        });
+      }, 500); // Log after 500ms of no movement
+
+      lastPosition.current = { ...currentPos };
+    }
+  });
+
+  return null;
+};
+
 
 const Home: React.FC = () => {
   return (
@@ -10,27 +54,47 @@ const Home: React.FC = () => {
       {/* Home Section */}
       <Box id="home"
         sx={{
-          minHeight: '100vh',
+          minHeight: '55vh',
           display: 'flex',
           alignItems: 'center',
-          backgroundImage: 'url(/images/background1.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
           position: 'relative',
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 1,
-          }
+          overflow: 'hidden'
         }}>
-        <Container maxWidth="lg">
+        <Box sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 1,
+          maxHeight: '600px',
+          aspectRatio: '16/9',
+          overflow: 'hidden'
+        }}>
+          <Canvas camera={{ position: [85, 311, 340], fov: 75 }}>
+            <Suspense fallback={null}>
+              <ambientLight intensity={0.6} />
+              <directionalLight position={[10, 10, 5]} intensity={0.8} />
+              <pointLight position={[-10, -10, -5]} intensity={0.5} />
+              <hemisphereLight
+                groundColor={0x080820}
+                intensity={0.3}
+              />
+              <Model />
+              <Environment preset="sunset" />
+              <OrbitControls
+                enableZoom={false}
+                enablePan={false}
+                autoRotate={true}
+                autoRotateSpeed={0.5}
+              />
+            </Suspense>
+            {/* <CameraPositionLogger /> */}
+          </Canvas>
+        </Box>
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }} className="text-overlay">
           <Typography variant="h1" component="h1" gutterBottom align="center" sx={{
-            color: 'white',
+            color: 'black',
             fontFamily: '"Dancing Script", "Brush Script MT", cursive',
             fontSize: {
               xs: '2rem',
@@ -43,7 +107,7 @@ const Home: React.FC = () => {
             Bem-vindos à Clínica Plenamente
           </Typography>
           <Typography variant="h3" component="p" align="center" sx={{
-            mt: 2, color: 'white',
+            mt: 2, color: 'black',
             fontFamily: '"Dancing Script", "Brush Script MT", cursive',
             fontSize: {
               xs: '1.2rem',
@@ -330,11 +394,11 @@ const Home: React.FC = () => {
                 <Typography variant="h6" gutterBottom
                   sx={{
                     fontSize: {
-                      xs: '1.1rem', 
-                      sm: '1.3rem', 
-                      md: '1.5rem', 
-                      lg: '1.8rem', 
-                      xl: '2rem'    
+                      xs: '1.1rem',
+                      sm: '1.3rem',
+                      md: '1.5rem',
+                      lg: '1.8rem',
+                      xl: '2rem'
                     }
                   }}
                 >
@@ -343,11 +407,11 @@ const Home: React.FC = () => {
                 <Typography
                   sx={{
                     fontSize: {
-                      xs: '0.9rem', 
-                      sm: '1rem',   
-                      md: '1.1rem', 
-                      lg: '1.2rem', 
-                      xl: '1.3rem'  
+                      xs: '0.9rem',
+                      sm: '1rem',
+                      md: '1.1rem',
+                      lg: '1.2rem',
+                      xl: '1.3rem'
                     }
                   }}
                 >
@@ -360,11 +424,11 @@ const Home: React.FC = () => {
                 <Typography variant="h6" gutterBottom
                   sx={{
                     fontSize: {
-                      xs: '1.1rem', 
-                      sm: '1.3rem', 
-                      md: '1.5rem', 
-                      lg: '1.8rem', 
-                      xl: '2rem'    
+                      xs: '1.1rem',
+                      sm: '1.3rem',
+                      md: '1.5rem',
+                      lg: '1.8rem',
+                      xl: '2rem'
                     }
                   }}
                 >
@@ -373,11 +437,11 @@ const Home: React.FC = () => {
                 <Typography
                   sx={{
                     fontSize: {
-                      xs: '0.9rem', 
-                      sm: '1rem',   
-                      md: '1.1rem', 
-                      lg: '1.2rem', 
-                      xl: '1.3rem'  
+                      xs: '0.9rem',
+                      sm: '1rem',
+                      md: '1.1rem',
+                      lg: '1.2rem',
+                      xl: '1.3rem'
                     }
                   }}
                 >
