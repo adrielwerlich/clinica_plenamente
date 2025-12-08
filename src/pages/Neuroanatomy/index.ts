@@ -1,1 +1,1 @@
-export { default } from './Neuroanatomy.tsx'
+export { default } from './Neuroanatomy'

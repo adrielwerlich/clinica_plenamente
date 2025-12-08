@@ -45,11 +45,23 @@ const NeuroanatomyModel = ({ setHoverInfo }: { setHoverInfo: (info: HoverInfo) =
 
   useEffect(() => {
     meshes.forEach((mesh) => {
-      // Only clone if not already cloned
-      if (mesh.material && !mesh.material.userData.isCloned) {
-        mesh.material = mesh.material.clone();
-        mesh.material.userData.isCloned = true;
-        mesh.material.color.set(DEFAULT_COLOR);
+      const mat = mesh.material;
+      // normalize: skip if material is an array
+      if (Array.isArray(mat)) return;
+      // cast to allow userData property
+      const material = mat as THREE.Material & { userData?: any } | undefined;
+      if (material) {
+        if (!material.userData) material.userData = {};
+        if (!material.userData.isCloned) {
+          mesh.material = material.clone();
+          // ensure the cloned material has userData
+          const cloned = mesh.material as THREE.Material & { userData?: any };
+          cloned.userData = cloned.userData || {};
+          cloned.userData.isCloned = true;
+          // set color if available
+          // @ts-ignore - some materials may not have color
+          if ((cloned as any).color) (cloned as any).color.set(DEFAULT_COLOR);
+        }
       }
     });
   }, [meshes]);
@@ -64,7 +76,11 @@ const NeuroanatomyModel = ({ setHoverInfo }: { setHoverInfo: (info: HoverInfo) =
           object={mesh}
           onPointerOver={(e) => {
             e.stopPropagation();
-            mesh.material.color.set(HOVER_COLOR);
+            const mat = mesh.material;
+            if (!Array.isArray(mat)) {
+              const m = mat as any;
+              if (m && m.color && typeof m.color.set === 'function') m.color.set(HOVER_COLOR);
+            }
             // Convert 3D position to 2D screen position
             const vector = mesh.getWorldPosition(new THREE.Vector3()).clone().project(camera);
             const x = ((vector.x + 1) / 2) * gl.domElement.clientWidth;
@@ -73,7 +89,11 @@ const NeuroanatomyModel = ({ setHoverInfo }: { setHoverInfo: (info: HoverInfo) =
           }}
           onPointerOut={(e) => {
             e.stopPropagation();
-            mesh.material.color.set(DEFAULT_COLOR);
+            const mat = mesh.material;
+            if (!Array.isArray(mat)) {
+              const m = mat as any;
+              if (m && m.color && typeof m.color.set === 'function') m.color.set(DEFAULT_COLOR);
+            }
             setHoverInfo(null);
           }}
         />

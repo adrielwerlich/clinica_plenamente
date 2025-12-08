@@ -24,11 +24,15 @@ import {
     Psychology as PsychologyIcon,
     Favorite as FavoriteIcon,
     ContactMail as ContactIcon,
+    AdminPanelSettings as AdminIcon,
     AccountTree as NeuroanatomyIcon,
+    Article as BlogIcon, // Suggested icon for Blog
 } from '@mui/icons-material';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const Layout: React.FC = () => {
+    const { signOut } = useAuth();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const theme = useTheme();
@@ -36,6 +40,15 @@ const Layout: React.FC = () => {
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await signOut();
+            navigate('/'); // adjust destination if you have a specific login route
+        } catch (err) {
+            console.error('Logout failed', err);
+        }
+    };
 
     const handleSidebarNavigation = (path: string) => {
         navigate(path);
@@ -100,6 +113,9 @@ const Layout: React.FC = () => {
     const sidebarMenuItems = [
         { text: 'Página Inicial', icon: <HomeIcon />, path: '/' },
         { text: 'Neuroanatomia', icon: <NeuroanatomyIcon />, path: '/neuroanatomia' },
+        { text: 'Blog', icon: <BlogIcon />, path: '/blogs' },
+        { text: 'Admin', icon: <AdminIcon />, path: '/admin' },
+
     ];
 
     return (
@@ -163,6 +179,9 @@ const Layout: React.FC = () => {
                                 ))}
                             </Box>
                         )
+                    )}
+                    {location.pathname.startsWith('/admin') && (
+                        <Button color="inherit" onClick={handleLogout}>Logout</Button>
                     )}
                 </Toolbar>
             </AppBar>
