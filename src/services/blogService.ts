@@ -66,8 +66,25 @@ export async function compressImageToBase64(file: File, maxSizeKB = 900, maxWidt
   });
 }
 
-export function subscribeBlogs(callback: (blogs: Blog[]) => void) {
+export function subscribeToPublishedBlogs(callback: (blogs: Blog[]) => void) {
   const q = query(blogsCol, where('published', '==', true), orderBy('createdAt', 'desc'));
+  return onSnapshot(q, async (snapshot: QuerySnapshot<DocumentData>) => {
+    const blogs = snapshot.docs.map(d => ({ id: d.id, ...(d.data() as Blog) }));
+
+
+    for (const blog of blogs) {
+      if (blog.thumbnailId) {
+        blog.thumbnail = await getThumbnailById(blog.thumbnailId);
+      }
+    }
+
+    callback(blogs);
+  });
+}
+
+
+export function subscribeAllBlogs(callback: (blogs: Blog[]) => void) {
+  const q = query(blogsCol, orderBy('createdAt', 'desc'));
   return onSnapshot(q, async (snapshot: QuerySnapshot<DocumentData>) => {
     const blogs = snapshot.docs.map(d => ({ id: d.id, ...(d.data() as Blog) }));
 
@@ -162,7 +179,7 @@ export async function deleteBlog(id: string) {
     const blogData = blogSnap.data();
 
     // Delete thumbnail if exists
-    if (blogData.thumbnailId) {
+    if (blogData.thumbnailId) {fsubs
       debugger;
       const thumbRef = doc(db, 'thumbnails', blogData.thumbnailId);
       await deleteDoc(thumbRef);

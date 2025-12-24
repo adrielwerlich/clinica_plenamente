@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, Card, CardMedia, CardContent, Typography, CircularProgress, Box } from '@mui/material';
-import { subscribeBlogs } from '../../services/blogService';
+import { subscribeToPublishedBlogs } from '../../services/blogService';
 import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 
 import './BlogList.css';
@@ -11,7 +11,7 @@ const BlogList = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsub = subscribeBlogs(list => {
+    const unsub = subscribeToPublishedBlogs(list => {
 
       setBlogs(list);
       setLoading(false);

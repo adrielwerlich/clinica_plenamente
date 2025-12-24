@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Box, Button, Typography, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import BlogList from '../../components/Admin/BlogList';
-import { subscribeBlogs, deleteBlog } from '../../services/blogService';
+import { subscribeAllBlogs, deleteBlog } from '../../services/blogService';
 import { Blog } from '../../types/blog';
 
 const Dashboard: React.FC = () => {
@@ -11,7 +11,7 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsub = subscribeBlogs(list => {
+    const unsub = subscribeAllBlogs(list => {
       setBlogs(list);
       setLoading(false);
     });
