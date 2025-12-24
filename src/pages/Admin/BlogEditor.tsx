@@ -84,6 +84,9 @@ const BlogEditor: React.FC = () => {
           setTitle(blog.title || '');
           setPublished(!!blog.published);
           setContent(blog.content || '');
+          if (blog.thumbnail) {
+            setThumbnailPreview(blog.thumbnail);
+          }
           // If Quill is loaded, set editor HTML
           if (quillInstance.current) {
             quillInstance.current.clipboard.dangerouslyPasteHTML(blog.content || '');
