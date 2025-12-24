@@ -179,8 +179,7 @@ export async function deleteBlog(id: string) {
     const blogData = blogSnap.data();
 
     // Delete thumbnail if exists
-    if (blogData.thumbnailId) {fsubs
-      debugger;
+    if (blogData.thumbnailId) {
       const thumbRef = doc(db, 'thumbnails', blogData.thumbnailId);
       await deleteDoc(thumbRef);
     }
