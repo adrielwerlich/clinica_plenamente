@@ -48,9 +48,9 @@ const BlogList = () => {
       >
         Nossas postagens de saúde mental
       </Typography>
-      <Grid container spacing={3} sx={{ mt: 2, p: 2 }}>
+      <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mt: 2, p: { xs: 1, sm: 2 } }}>
         {blogs.map(blog => (
-          <Grid size={4} key={blog.id}>
+          <Grid  size={{ xs: 12, md: 4 }} key={blog.id}>
             <Card className="blog-card" sx={{ minHeight: 272, maxHeight: 272 }}>
               <Link to={`/blogs/${blog.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                 <CardMedia
@@ -76,7 +76,7 @@ const BlogList = () => {
                     {blog.title.length > 101 ? blog.title.slice(0, 101) + '...' : blog.title}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">{blog.excerpt}</Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
+                  {/* <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
                     {(() => {
                       const ts = blog.updatedAt || blog.createdAt;
                       if (ts && ts.seconds) {
@@ -85,7 +85,7 @@ const BlogList = () => {
                       }
                       return '';
                     })()}
-                  </Typography>
+                  </Typography> */}
                 </CardContent>
               </Link>
             </Card>
