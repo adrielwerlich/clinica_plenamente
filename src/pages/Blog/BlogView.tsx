@@ -14,14 +14,28 @@ const BlogView = () => {
       .finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <CircularProgress sx={{ mt: 4 }} />;
+  if (loading)
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+        <CircularProgress />
+      </Box>
+    );
   if (!blog) return <Typography sx={{ mt: 4 }}>Blog not found.</Typography>;
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
       {blog.thumbnail && (
         <Box sx={{ mb: 2 }}>
-          <img src={blog.thumbnail} alt={blog.title} style={{ maxWidth: '100%', borderRadius: 8 }} />
+          <img
+            src={blog.thumbnail}
+            alt={blog.title}
+            style={{
+              maxWidth: '100%',
+              borderRadius: 8,
+              display: 'block',
+              margin: '0 auto'
+            }}
+          />
         </Box>
       )}
       <Typography variant="h4" gutterBottom>{blog.title}</Typography>
