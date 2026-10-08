@@ -28,7 +28,10 @@ const Dashboard: React.FC = () => {
     <Container>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 4 }}>
         <Typography variant="h5">Admin Dashboard - Blogs</Typography>
-        <Button variant="contained" onClick={() => navigate('/admin/blogs/new')}>New Blog</Button>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button variant="outlined" onClick={() => navigate('/admin/feed/new')}>New Feed Post</Button>
+          <Button variant="contained" onClick={() => navigate('/admin/blogs/new')}>New Blog</Button>
+        </Box>
       </Box>
 
       <Box sx={{ mt: 3 }}>

@@ -11,6 +11,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 // Import Quill's CSS
 import 'quill/dist/quill.snow.css';
 import { createBlog, updateBlog, getBlogById } from 'services/blogService';
@@ -35,16 +36,17 @@ const BlogEditor: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string>('');
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   const quillRef = useRef<HTMLDivElement>(null);
   const quillInstance = useRef<any>(null);
   const pendingContent = useRef<string | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
+    let active = true;
 
     import('quill').then(({ default: Quill }) => {
-      if (quillRef.current && !quillInstance.current) {
+      if (active && quillRef.current && !quillInstance.current) {
         quillInstance.current = new Quill(quillRef.current, {
           theme: 'snow',
           placeholder: 'Digite o conteúdo...',
@@ -58,8 +60,9 @@ const BlogEditor: React.FC = () => {
             ],
           },
         });
-        quillInstance.current.on('text-change', () => {
+        quillInstance.current.on('text-change', (_delta: unknown, _oldDelta: unknown, source: string) => {
           setContent(quillInstance.current.root.innerHTML);
+          if (source === 'user') setHasUnsavedChanges(true);
         });
         // If blog content already loaded, set it
         if (pendingContent.current) {
@@ -70,7 +73,7 @@ const BlogEditor: React.FC = () => {
     });
 
     return () => {
-      isMounted = false;
+      active = false;
       quillInstance.current = null;
     };
   }, []);
@@ -98,6 +101,11 @@ const BlogEditor: React.FC = () => {
         .finally(() => { setLoading(false) });
     }
   }, [id]);
+
+  const handleBack = () => {
+    if (hasUnsavedChanges && !window.confirm('You have unsaved changes. Leave without saving?')) return;
+    navigate('/admin/blogs');
+  };
 
   const handleSubmit = async (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -128,7 +136,7 @@ const BlogEditor: React.FC = () => {
           thumbnail
         );
       }
-      navigate('/admin');
+      navigate('/admin/blogs');
     } catch (err: any) {
       if (err?.message?.includes('too large')) {
         setError('A imagem é muito grande. Por favor, escolha uma imagem menor.');
@@ -143,6 +151,9 @@ const BlogEditor: React.FC = () => {
   return (
     <Container maxWidth="md">
       <Box sx={{ mt: 4, position: 'relative' }}>
+        <Button startIcon={<ArrowBackIcon />} onClick={handleBack} disabled={saving}>
+          Back to blogs
+        </Button>
         <Typography variant="h6">{id && id !== 'new' ? 'Edit Blog' : 'New Blog'}</Typography>
         {error && <Alert severity="error" sx={{ my: 2 }}>{error}</Alert>}
         <Box sx={{ position: 'relative' }}>
@@ -151,7 +162,7 @@ const BlogEditor: React.FC = () => {
             onSubmit={handleSubmit}
             sx={{ display: 'grid', gap: 2, mt: 2, opacity: loading ? 0.5 : 1 }}
           >
-            <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} fullWidth />
+            <TextField label="Title" value={title} onChange={(e) => { setTitle(e.target.value); setHasUnsavedChanges(true); }} fullWidth />
             <div
               ref={quillRef}
               style={{
@@ -164,7 +175,7 @@ const BlogEditor: React.FC = () => {
               }}
             />
             <FormControlLabel
-              control={<Checkbox checked={published} onChange={(e) => setPublished(e.target.checked)} />}
+              control={<Checkbox checked={published} onChange={(e) => { setPublished(e.target.checked); setHasUnsavedChanges(true); }} />}
               label="Published"
             />
             <Box sx={{ mb: 2 }}>
@@ -179,6 +190,7 @@ const BlogEditor: React.FC = () => {
                     onChange={e => {
                       const file = e.target.files?.[0] || null;
                       setThumbnail(file);
+                      if (file) setHasUnsavedChanges(true);
                       if (file) {
                         const reader = new FileReader();
                         reader.onload = ev => setThumbnailPreview(ev.target?.result as string);
@@ -219,6 +231,7 @@ const BlogEditor: React.FC = () => {
                       onClick={() => {
                         setThumbnail(null);
                         setThumbnailPreview('');
+                        setHasUnsavedChanges(true);
                       }}
                     >
                       <DeleteIcon fontSize="medium" />
@@ -229,7 +242,7 @@ const BlogEditor: React.FC = () => {
             </Box>
             <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
               <Button variant="contained" type="submit" disabled={saving}>{saving ? 'Saving...' : 'Save'}</Button>
-              <Button variant="outlined" onClick={() => navigate('/admin')}>Cancel</Button>
+              <Button variant="outlined" onClick={handleBack} disabled={saving}>Cancel</Button>
             </Box>
           </Box>
           {loading && (

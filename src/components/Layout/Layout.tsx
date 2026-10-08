@@ -26,7 +26,8 @@ import {
     ContactMail as ContactIcon,
     AdminPanelSettings as AdminIcon,
     AccountTree as NeuroanatomyIcon,
-    Article as BlogIcon, // Suggested icon for Blog
+    Article as BlogIcon,
+    RssFeed as FeedIcon,
 } from '@mui/icons-material';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -104,6 +105,8 @@ const Layout: React.FC = () => {
 
     const menuItems = [
         { text: 'Início', icon: <HomeIcon />, sectionId: 'home' },
+        { text: 'Blog', icon: <BlogIcon />, path: 'blogs' },
+        { text: 'Feed', icon: <FeedIcon />, path: 'feed' },
         { text: 'Tratamento', icon: <PsychologyIcon />, sectionId: 'treatment' },
         { text: 'Saúde Mental', icon: <FavoriteIcon />, sectionId: 'mental-health' },
         { text: 'Contato', icon: <ContactIcon />, sectionId: 'contact' },
@@ -155,7 +158,13 @@ const Layout: React.FC = () => {
                                     {menuItems.map((item) => (
                                         <MenuItem
                                             key={item.text}
-                                            onClick={() => scrollToSection(item.sectionId)}
+                                            onClick={() => {
+                                                if (item.sectionId) {
+                                                    scrollToSection(item.sectionId);
+                                                } else if (item.path) {
+                                                    handleSidebarNavigation(item.path)
+                                                }
+                                            }}
                                         >
                                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                                 {item.icon}
@@ -172,7 +181,13 @@ const Layout: React.FC = () => {
                                         key={item.text}
                                         color="inherit"
                                         startIcon={item.icon}
-                                        onClick={() => scrollToSection(item.sectionId)}
+                                        onClick={() => {
+                                            if (item.sectionId) {
+                                                scrollToSection(item.sectionId);
+                                            } else if (item.path) {
+                                                handleSidebarNavigation(item.path)
+                                            }
+                                        }}
                                     >
                                         {item.text}
                                     </Button>

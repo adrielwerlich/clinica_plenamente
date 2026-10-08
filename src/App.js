@@ -9,10 +9,14 @@ import Login from './pages/Admin/Login';
 import ProtectedRoute from './components/Routing/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 
-import AdminDashboard from './pages/Admin/Dashboard';
+import AdminHome from './pages/Admin/AdminHome';
+import BlogDashboard from './pages/Admin/BlogDashboard';
+import FeedDashboard from './pages/Admin/FeedDashboard';
 import BlogEditor from './pages/Admin/BlogEditor';
 import BlogList from './pages/Blog/BlogList';
 import BlogView from './pages/Blog/BlogView';
+import Feed from './pages/Feed';
+import FeedEditor from './pages/Admin/FeedEditor';
 
 const theme = createTheme();
 
@@ -28,6 +32,7 @@ function App() {
               <Route path="neuroanatomia" element={<Neuroanatomy />} />
               <Route path="blogs" element={<BlogList />} />
               <Route path="blogs/:id" element={<BlogView />} />
+              <Route path="feed" element={<Feed />} />
 
               <Route path="/admin/login" element={<Login />} />
 
@@ -36,7 +41,15 @@ function App() {
                   index
                   element={
                     <ProtectedRoute>
-                      <AdminDashboard />
+                      <AdminHome />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="blogs"
+                  element={
+                    <ProtectedRoute>
+                      <BlogDashboard />
                     </ProtectedRoute>
                   }
                 />
@@ -53,6 +66,30 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <BlogEditor />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="feed/new"
+                  element={
+                    <ProtectedRoute>
+                      <FeedEditor />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="feed"
+                  element={
+                    <ProtectedRoute>
+                      <FeedDashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="feed/:id/edit"
+                  element={
+                    <ProtectedRoute>
+                      <FeedEditor />
                     </ProtectedRoute>
                   }
                 />
