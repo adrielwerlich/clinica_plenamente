@@ -17,6 +17,7 @@ import {
     ListItemIcon,
     ListItemText,
     Divider,
+    Tooltip,
 } from '@mui/material';
 import {
     Menu as MenuIcon,
@@ -121,6 +122,19 @@ const Layout: React.FC = () => {
 
     ];
 
+    const isBlogPage = location.pathname === '/blogs' || location.pathname.startsWith('/blogs/');
+    const appBarLinks = location.pathname === '/feed'
+        ? [
+            { text: 'Início', icon: <HomeIcon />, path: '/' },
+            { text: 'Blog', icon: <BlogIcon />, path: '/blogs' },
+        ]
+        : isBlogPage
+            ? [
+                { text: 'Início', icon: <HomeIcon />, path: '/' },
+                { text: 'Feed', icon: <FeedIcon />, path: '/feed' },
+            ]
+            : [];
+
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <AppBar position="fixed">
@@ -136,9 +150,34 @@ const Layout: React.FC = () => {
                         <MenuIcon />
                     </IconButton>
 
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         Clínica Plenamente
                     </Typography>
+
+                    {appBarLinks.length > 0 && (
+                        <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
+                            {appBarLinks.map((link) => isMobile ? (
+                                <Tooltip key={link.text} title={link.text}>
+                                    <IconButton
+                                        color="inherit"
+                                        aria-label={`Ir para ${link.text}`}
+                                        onClick={() => navigate(link.path)}
+                                    >
+                                        {link.icon}
+                                    </IconButton>
+                                </Tooltip>
+                            ) : (
+                                <Button
+                                    key={link.text}
+                                    color="inherit"
+                                    startIcon={link.icon}
+                                    onClick={() => navigate(link.path)}
+                                >
+                                    {link.text}
+                                </Button>
+                            ))}
+                        </Box>
+                    )}
 
                     {location.pathname === '/' && (
                         isMobile ? (
