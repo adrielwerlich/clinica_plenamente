@@ -156,6 +156,29 @@ const Layout: React.FC = () => {
                         Clínica Plenamente
                     </Typography>
 
+                    <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
+                        {isMobile ? (
+                            <Tooltip title="Treino Cognitivo">
+                                <IconButton
+                                    color="inherit"
+                                    aria-label="Ir para Treino Cognitivo"
+                                    onClick={() => navigate('/treino-cognitivo')}
+                                >
+                                    <GameIcon />
+                                </IconButton>
+                            </Tooltip>
+                        ) : (
+                            <Button
+                                color="inherit"
+                                startIcon={<GameIcon />}
+                                onClick={() => navigate('/treino-cognitivo')}
+                                sx={location.pathname === '/treino-cognitivo' ? { bgcolor: 'rgba(255,255,255,0.15)' } : undefined}
+                            >
+                                Treino Cognitivo
+                            </Button>
+                        )}
+                    </Box>
+
                     {appBarLinks.length > 0 && (
                         <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
                             {appBarLinks.map((link) => isMobile ? (

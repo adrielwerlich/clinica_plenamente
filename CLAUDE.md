@@ -28,3 +28,4 @@ Contexto compartilhado entre chats/sessões (Claude desktop, extensão do VS Cod
 
 ## Log de progresso
 - 2026-11-04: branch criada; passo 1 (rota `/treino-cognitivo`, página, item no menu lateral) implementado; build Unity ainda não copiado.
+- 2026-11-04: botão "Treino Cognitivo" adicionado também na navbar fixa (ícone no mobile); build Gzip do Unity copiado para public/games/treino-cognitivo/ (não versionado, aguardando decisão de hospedagem).
