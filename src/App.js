@@ -17,6 +17,7 @@ import BlogList from './pages/Blog/BlogList';
 import BlogView from './pages/Blog/BlogView';
 import Feed from './pages/Feed';
 import FeedEditor from './pages/Admin/FeedEditor';
+import TreinoCognitivo from './pages/Game/TreinoCognitivo';
 
 const theme = createTheme();
 
@@ -33,6 +34,7 @@ function App() {
               <Route path="blogs" element={<BlogList />} />
               <Route path="blogs/:id" element={<BlogView />} />
               <Route path="feed" element={<Feed />} />
+              <Route path="treino-cognitivo" element={<TreinoCognitivo />} />
 
               <Route path="/admin/login" element={<Login />} />
 

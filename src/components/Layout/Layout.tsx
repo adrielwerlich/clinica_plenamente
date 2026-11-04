@@ -29,6 +29,7 @@ import {
     AccountTree as NeuroanatomyIcon,
     Article as BlogIcon,
     RssFeed as FeedIcon,
+    SportsEsports as GameIcon,
 } from '@mui/icons-material';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -118,6 +119,7 @@ const Layout: React.FC = () => {
         { text: 'Página Inicial', icon: <HomeIcon />, path: '/' },
         { text: 'Neuroanatomia', icon: <NeuroanatomyIcon />, path: '/neuroanatomia' },
         { text: 'Blog', icon: <BlogIcon />, path: '/blogs' },
+        { text: 'Treino Cognitivo', icon: <GameIcon />, path: '/treino-cognitivo' },
         { text: 'Admin', icon: <AdminIcon />, path: '/admin' },
 
     ];
