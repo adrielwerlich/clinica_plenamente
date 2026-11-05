@@ -1,4 +1,4 @@
-import { onAuthStateChanged, User } from 'firebase/auth';
+import { onAuthStateChanged, signInAnonymously, User } from 'firebase/auth';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase/firebase';
 
@@ -75,6 +75,26 @@ const withTimeout = <T,>(promise: Promise<T>, ms: number): Promise<T> =>
 export const installGameBridge = (onSignInRequested?: () => void): (() => void) => {
     // Assinaturas de login feitas pelo jogo: canceladas ao sair da página (o iframe some sem avisar).
     const unsubscribers = new Set<() => void>();
+    let active = true;
+
+    // Login anônimo automático (decisão P8): quem entra no jogo sem conta ganha um uid anônimo;
+    // no cadastro, a conta é vinculada a esse mesmo uid, sem perder o histórico.
+    // Se falhar (sem rede, provedor desativado), a próxima escrita tenta de novo.
+    let signInPromise: Promise<void> | null = null;
+    const ensureSignedIn = (): Promise<void> => {
+        if (!signInPromise) {
+            signInPromise = auth.authStateReady().then(async () => {
+                if (!active || auth.currentUser) return;
+                try {
+                    await signInAnonymously(auth);
+                } catch (e) {
+                    console.warn('[gameBridge] login anônimo falhou:', (e as { code?: string })?.code);
+                    signInPromise = null;
+                }
+            });
+        }
+        return signInPromise;
+    };
 
     const bridge: TreinoCognitivoBridge = {
         version: 1,
@@ -98,8 +118,8 @@ export const installGameBridge = (onSignInRequested?: () => void): (() => void) 
             const [collection, id] = parsePath(relativePath);
             if (data === null || typeof data !== 'object' || Array.isArray(data)) throw new BridgeError('invalid-data');
             if (new TextEncoder().encode(JSON.stringify(data)).length > MAX_JSON_BYTES) throw new BridgeError('too-large');
-            // Na abertura da página o Firebase ainda pode estar restaurando a sessão salva.
-            await auth.authStateReady();
+            // Na abertura o Firebase ainda pode estar restaurando a sessão ou fazendo o login anônimo.
+            await ensureSignedIn();
             const user = auth.currentUser;
             if (!user) throw new BridgeError('not-signed-in');
             try {
@@ -120,8 +140,11 @@ export const installGameBridge = (onSignInRequested?: () => void): (() => void) 
     };
     if (onSignInRequested) bridge.requestSignIn = () => onSignInRequested();
 
+    ensureSignedIn();
+
     window.treinoCognitivoBridge = bridge;
     return () => {
+        active = false;
         unsubscribers.forEach((unsubscribe) => unsubscribe());
         unsubscribers.clear();
         if (window.treinoCognitivoBridge === bridge) delete window.treinoCognitivoBridge;

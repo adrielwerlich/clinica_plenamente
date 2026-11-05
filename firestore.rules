@@ -19,5 +19,13 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isAdmin();
     }
+
+    // TEMPORÁRIO (teste de fumaça do Treino Cognitivo, passo 5): cada usuário grava e lê
+    // só o próprio users/{uid}/debug/{doc}. Substituir pelas regras definitivas no passo 8.
+    match /users/{uid}/debug/{docId} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['at', 'appVersion', 'touch', 'uploadedAt']);
+    }
   }
 }
