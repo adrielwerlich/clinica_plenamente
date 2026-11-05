@@ -1,6 +1,6 @@
 # CLAUDE.md — Clínica Plenamente (site)
 
-Contexto compartilhado entre chats/sessões (Claude desktop, extensão do VS Code). Atualize o **Log de progresso** a cada passo concluído.
+Contexto compartilhado entre chats/sessões (Claude desktop, extensão do VS Code). Atualize o **Log de progresso** a cada passo concluído, no formato descrito nele.
 
 ## Projeto
 - App React (CRA, React 19, MUI 7, Firebase 12 Auth+Firestore, HashRouter). Site: https://clinicaplenamenteonline.com.br
@@ -27,10 +27,53 @@ Contexto compartilhado entre chats/sessões (Claude desktop, extensão do VS Cod
 5. [ ] Ponte JS (.jslib) no Unity para enviar logs ao Firestore
 
 ## Log de progresso
-- 2026-11-04: branch criada; passo 1 (rota `/treino-cognitivo`, página, item no menu lateral) implementado; build Unity ainda não copiado.
-- 2026-11-04: botão "Treino Cognitivo" adicionado também na navbar fixa (ícone no mobile); build Gzip do Unity copiado para public/games/treino-cognitivo/ (não versionado, aguardando decisão de hospedagem).
-- 2026-11-05: navbar na rota `/treino-cognitivo` mostra Início, Feed e Blog e esconde o botão Treino Cognitivo (que segue nas outras rotas). Decidido no AI-Game-Lab: hospedagem do build por GitHub Release baixado no deploy (opção B); ponte pela página React (opção A); login do jogador no site; provedores Google, e-mail/senha e anônimo habilitados no Console. Plano completo: docs/sprints/sprint-1-publicacao-site-firestore-login.md no repo do Unity.
-- 2026-11-05: passo 4 do plano do Unity: `src/services/gameBridge.ts` expõe `window.treinoCognitivoBridge` (v1) à página do jogo: estado de login sem uid/e-mail/nome, gravação em `users/{uid}/<colecao>/<doc>` só em coleções permitidas (hoje só `debug`), tempo limite de 15 s, erros só com código curto; `requestSignIn` só aparece quando houver tela de login. Regras do Firestore para `users/` ainda não existem (passo 8: exigir `request.auth.uid == uid` e restringir coleções no servidor).
-- 2026-11-05: login anônimo automático na página do jogo (decisão P8) e regra TEMPORÁRIA em firestore.rules para users/{uid}/debug (teste de fumaça). **Deploy bloqueado até o passo 2b** (ProtectedRoute aceita qualquer usuário logado, inclusive anônimo).
-- 2026-11-05: passo 2b: admin numa instância própria do Firebase (`adminAuth`/`adminDb`, app 'admin'), sessão separada do jogador; `ProtectedRoute` exige a claim `admin` (com carregamento e aviso de erro); fim do `admin_user` no localStorage; Login recusa conta sem claim e traduz erros; Logout só aparece para admin. Depois do deploy o admin precisa entrar de novo uma vez (sessão antiga ficava na instância padrão). Bloqueio de deploy por causa do anônimo: resolvido; falta o admin testar o login real.
-- 2026-11-05: a conta admin não tinha a claim `admin` (o login novo recusou). Script `scripts/admin-claim/set-admin-claim.mjs` (firebase-admin, dependências próprias) concede a claim uma vez com uma chave de serviço guardada fora do repo; `.gitignore` bloqueia chaves de serviço.
+
+**Como registrar (obrigatório a cada passo concluído):** uma entrada por passo, em ordem cronológica (mais nova no fim), com:
+data · branch e hash do commit · o que mudou (arquivos e comportamento) · decisões e o motivo · o que foi verificado e o que
+ficou sem verificar · pendências. Tópicos curtos bastam, mas todos os itens precisam aparecer.
+Quando passar de ~30 entradas, mover as mais antigas para `docs/HISTORY.md` e deixar aqui um link no lugar delas.
+
+- **2026-11-04 · `feature/jogo-treino-cognitivo` `fbee4ab`** — rota `/treino-cognitivo`, página com iframe e item no menu lateral; build Unity ainda não copiado. (Entrada anterior ao formato atual.)
+- **2026-11-04 · `feature/jogo-treino-cognitivo` `88dd1d4`** — botão "Treino Cognitivo" na navbar fixa (ícone no mobile); build Gzip copiado para `public/games/treino-cognitivo/`, não versionado. (Entrada anterior ao formato atual.)
+
+### 2026-11-05 · `feature/jogo-treino-cognitivo` `c878eb3` — navbar na rota do jogo
+- **Mudou:** `src/components/Layout/Layout.tsx`: em `/treino-cognitivo` a navbar mostra Início, Feed e Blog e esconde o botão Treino Cognitivo; nas outras rotas o botão continua.
+- **Decisões:** pedido do usuário (a rota do jogo tinha ficado só com o botão do jogo). No AI-Game-Lab ficou decidido: build hospedado via GitHub Release baixado no deploy (opção B), ponte pela página React (opção A), login do jogador no site.
+- **Verificado:** `tsc` sem erros; navegador em 1280 e 375 px, nas rotas `/treino-cognitivo` e `/blogs`.
+- **Sem verificar:** —
+- **Pendências:** —
+
+### 2026-11-05 · `feature/jogo-treino-cognitivo` `c729266` — ponte do jogo (`gameBridge`)
+- **Mudou:** `src/services/gameBridge.ts` (novo) e `src/pages/Game/TreinoCognitivo.tsx`: a página expõe `window.treinoCognitivoBridge` v1 ao iframe — estado de login sem uid, e-mail ou nome; gravação em `users/{uid}/<colecao>/<doc>` só em coleções permitidas (hoje só `debug`), com limite de 900 KB e tempo limite de 15 s; erros só com código curto; ponte removida ao sair da página.
+- **Decisões:** o uid fica só no site, para o jogo não escolher onde grava e não levar dado pessoal para logs. Coleções de treino só depois do aceite dos termos.
+- **Verificado:** `tsc`; no navegador, ponte visível de dentro do iframe e gravações inválidas recusadas (`not-signed-in`, `collection-not-allowed`, `invalid-path`, `invalid-data`). Revisão com ressalvas corrigidas.
+- **Sem verificar:** comportamento sem rede.
+- **Pendências:** regras definitivas de `users/` (exigir `request.auth.uid == uid` e restringir coleções no servidor).
+
+### 2026-11-05 · `feature/jogo-treino-cognitivo` `3dc61c7` — login anônimo automático e regra temporária
+- **Mudou:** `gameBridge.ts` faz login anônimo ao abrir a página do jogo (com nova tentativa na próxima gravação se falhar); `firestore.rules` ganhou regra TEMPORÁRIA para `users/{uid}/debug/{doc}` (só o próprio uid, só os campos do ping).
+- **Decisões:** decisão do usuário (P8): dados vão ao Firestore no uid anônimo e a conta é vinculada ao mesmo uid no cadastro.
+- **Verificado:** `tsc`; teste ponta a ponta com o build do jogo — "logado (anônimo)" e ping gravado no Firestore depois que o usuário publicou a regra; build Gzip testado pelo usuário no celular.
+- **Sem verificar:** se recarregar a página mantém o mesmo uid anônimo.
+- **Pendências:** remover a regra `debug` e o gatilho de teste quando as regras definitivas entrarem.
+
+### 2026-11-05 · `feature/jogo-treino-cognitivo` `b88e3ca` — login do admin separado do jogador
+- **Mudou:** `src/firebase/firebase.ts` (instância `'admin'`: `adminAuth`/`adminDb`), `AuthContext.tsx`, `ProtectedRoute.tsx`, `pages/Admin/Login.tsx`, `Layout.tsx`, `blogService.ts`, `feedService.ts`. Rotas `/admin` exigem a claim `admin`; fim do `admin_user` no localStorage; Login recusa conta sem a claim e mostra erros em português; Logout só para admin.
+- **Decisões:** com o anônimo automático, qualquer visitante via as telas de admin; instâncias separadas fazem o login do admin não derrubar a sessão do jogador e o jogador nunca herdar acesso de admin.
+- **Verificado:** `tsc`; anônimo redirecionado de `/admin` para `/admin/login`; blog e feed públicos carregam; ping do jogador continua gravando. Revisão com ressalvas corrigidas.
+- **Sem verificar:** sem rede com token vencido.
+- **Pendências:** depois do deploy o admin entra de novo uma vez (a sessão antiga ficava na instância padrão).
+
+### 2026-11-05 · `feature/jogo-treino-cognitivo` `c142a3f` — script da permissão admin
+- **Mudou:** `scripts/admin-claim/` (novo, com dependências próprias): `set-admin-claim.mjs` dá ou tira a claim `admin` de uma conta usando uma chave de serviço; `.gitignore` da raiz e da pasta bloqueiam chaves de serviço.
+- **Decisões:** o login do usuário admin foi recusado porque a conta não tinha a claim; o usuário escolheu o script (em vez de uma lista de e-mails no código) por ser o caminho que já bate com `isAdmin()` das regras.
+- **Verificado:** `node --check` do script; um arquivo de chave de teste ficou fora do `git status`.
+- **Sem verificar:** execução real do script e login do admin (dependem do usuário).
+- **Pendências:** usuário rodar o script, apagar a chave e testar `/admin/login`; conferir se as regras publicadas no Console batem com `firestore.rules`.
+
+### 2026-11-05 · `feature/jogo-treino-cognitivo` (este commit) — formato do log
+- **Mudou:** `CLAUDE.md`: regra de registro do log (itens obrigatórios e arquivamento em `docs/HISTORY.md` depois de ~30 entradas); entradas de 05/11 reescritas no formato novo.
+- **Decisões:** pedido do usuário, para o log servir de continuidade entre sessões.
+- **Verificado:** —
+- **Sem verificar:** —
+- **Pendências:** —
