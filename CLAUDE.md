@@ -29,3 +29,4 @@ Contexto compartilhado entre chats/sessões (Claude desktop, extensão do VS Cod
 ## Log de progresso
 - 2026-11-04: branch criada; passo 1 (rota `/treino-cognitivo`, página, item no menu lateral) implementado; build Unity ainda não copiado.
 - 2026-11-04: botão "Treino Cognitivo" adicionado também na navbar fixa (ícone no mobile); build Gzip do Unity copiado para public/games/treino-cognitivo/ (não versionado, aguardando decisão de hospedagem).
+- 2026-11-05: navbar na rota `/treino-cognitivo` mostra Início, Feed e Blog e esconde o botão Treino Cognitivo (que segue nas outras rotas). Decidido no AI-Game-Lab: hospedagem do build por GitHub Release baixado no deploy (opção B); ponte pela página React (opção A); login do jogador no site; provedores Google, e-mail/senha e anônimo habilitados no Console. Plano completo: docs/sprints/sprint-1-publicacao-site-firestore-login.md no repo do Unity.

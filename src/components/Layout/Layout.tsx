@@ -125,17 +125,24 @@ const Layout: React.FC = () => {
     ];
 
     const isBlogPage = location.pathname === '/blogs' || location.pathname.startsWith('/blogs/');
-    const appBarLinks = location.pathname === '/feed'
+    const isGamePage = location.pathname === '/treino-cognitivo';
+    const appBarLinks = isGamePage
         ? [
             { text: 'Início', icon: <HomeIcon />, path: '/' },
+            { text: 'Feed', icon: <FeedIcon />, path: '/feed' },
             { text: 'Blog', icon: <BlogIcon />, path: '/blogs' },
         ]
-        : isBlogPage
+        : location.pathname === '/feed'
             ? [
                 { text: 'Início', icon: <HomeIcon />, path: '/' },
-                { text: 'Feed', icon: <FeedIcon />, path: '/feed' },
+                { text: 'Blog', icon: <BlogIcon />, path: '/blogs' },
             ]
-            : [];
+            : isBlogPage
+                ? [
+                    { text: 'Início', icon: <HomeIcon />, path: '/' },
+                    { text: 'Feed', icon: <FeedIcon />, path: '/feed' },
+                ]
+                : [];
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -156,6 +163,8 @@ const Layout: React.FC = () => {
                         Clínica Plenamente
                     </Typography>
 
+                    {/* Na própria rota do jogo o botão some; ali entram os links do site */}
+                    {!isGamePage && (
                     <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
                         {isMobile ? (
                             <Tooltip title="Treino Cognitivo">
@@ -172,12 +181,12 @@ const Layout: React.FC = () => {
                                 color="inherit"
                                 startIcon={<GameIcon />}
                                 onClick={() => navigate('/treino-cognitivo')}
-                                sx={location.pathname === '/treino-cognitivo' ? { bgcolor: 'rgba(255,255,255,0.15)' } : undefined}
                             >
                                 Treino Cognitivo
                             </Button>
                         )}
                     </Box>
+                    )}
 
                     {appBarLinks.length > 0 && (
                         <Box sx={{ display: 'flex', alignItems: 'center', ml: 1 }}>
