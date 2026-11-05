@@ -22,3 +22,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .env
+
+# Chaves de serviço do Firebase (acesso total ao projeto): nunca versionar
+*-firebase-adminsdk-*.json
+serviceAccount*.json
+service-account*.json

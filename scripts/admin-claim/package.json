@@ -1,0 +1,9 @@
+{
+  "name": "admin-claim",
+  "private": true,
+  "description": "Script local para dar a permissão admin (custom claim) a uma conta do Firebase Auth.",
+  "type": "module",
+  "dependencies": {
+    "firebase-admin": "^13.0.0"
+  }
+}
