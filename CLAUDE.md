@@ -71,9 +71,16 @@ Quando passar de ~30 entradas, mover as mais antigas para `docs/HISTORY.md` e de
 - **Sem verificar:** execução real do script e login do admin (dependem do usuário).
 - **Pendências:** usuário rodar o script, apagar a chave e testar `/admin/login`; conferir se as regras publicadas no Console batem com `firestore.rules`.
 
-### 2026-11-05 · `feature/jogo-treino-cognitivo` (este commit) — formato do log
+### 2026-11-05 · `feature/jogo-treino-cognitivo` `503258f` — formato do log
 - **Mudou:** `CLAUDE.md`: regra de registro do log (itens obrigatórios e arquivamento em `docs/HISTORY.md` depois de ~30 entradas); entradas de 05/11 reescritas no formato novo.
 - **Decisões:** pedido do usuário, para o log servir de continuidade entre sessões.
 - **Verificado:** —
 - **Sem verificar:** —
 - **Pendências:** —
+
+### 2026-11-05 · `feature/jogo-treino-cognitivo` (sem código; registro) — permissão admin concedida
+- **Mudou:** nada no código. O usuário rodou `scripts/admin-claim/set-admin-claim.mjs` no projeto `general-backend-ac34e`; a conta admin ficou com a claim `{"admin":true}`.
+- **Decisões:** —
+- **Verificado:** login em `/admin/login` com a conta admin abriu o Painel administrativo (confirmado pelo usuário com captura); a chave de serviço não está mais na pasta e nunca entrou no git.
+- **Sem verificar:** criar/editar post com a sessão nova do admin; se as regras publicadas no Console batem com `firestore.rules`.
+- **Pendências:** testar uma edição no blog ou no feed antes do deploy.
