@@ -35,7 +35,7 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const Layout: React.FC = () => {
-    const { signOut } = useAuth();
+    const { signOut, isAdmin } = useAuth();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const theme = useTheme();
@@ -268,7 +268,7 @@ const Layout: React.FC = () => {
                             </Box>
                         )
                     )}
-                    {location.pathname.startsWith('/admin') && (
+                    {location.pathname.startsWith('/admin') && isAdmin && (
                         <Button color="inherit" onClick={handleLogout}>Logout</Button>
                     )}
                 </Toolbar>

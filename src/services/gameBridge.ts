@@ -1,5 +1,6 @@
 import { onAuthStateChanged, signInAnonymously, User } from 'firebase/auth';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+// Instância padrão (jogador); o admin usa outra instância e nunca aparece aqui.
 import { auth, db } from '../firebase/firebase';
 
 // Ponte entre a página /treino-cognitivo e o jogo Unity no iframe (mesma origem).

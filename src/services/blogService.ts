@@ -14,7 +14,7 @@ import {
   QuerySnapshot,
 } from 'firebase/firestore';
 // import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db } from '../firebase/firebase';
+import { adminDb as db } from '../firebase/firebase'; // sessão do admin (leituras públicas também funcionam)
 import { Blog, Thumbnail } from '../types/blog';
 
 const blogsCol = collection(db, 'blogs');

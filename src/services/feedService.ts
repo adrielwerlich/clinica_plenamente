@@ -13,7 +13,7 @@ import {
   type DocumentData,
   type QuerySnapshot,
 } from 'firebase/firestore';
-import { db } from '../firebase/firebase';
+import { adminDb as db } from '../firebase/firebase'; // sessão do admin (leituras públicas também funcionam)
 import { compressImageToBase64 } from './blogService';
 import { FeedCrop, FeedImage, FeedImageDisplayMode, FeedPost } from '../types/feed';
 

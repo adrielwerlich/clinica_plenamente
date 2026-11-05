@@ -3,8 +3,16 @@ import { Box, Container, TextField, Button, Typography, Alert } from '@mui/mater
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
+const LOGIN_ERRORS: Record<string, string> = {
+  'auth/invalid-credential': 'E-mail ou senha incorretos.',
+  'auth/invalid-email': 'E-mail inválido.',
+  'auth/too-many-requests': 'Muitas tentativas. Aguarde um pouco e tente de novo.',
+  'auth/network-request-failed': 'Sem conexão. Confira a internet e tente de novo.',
+  'auth/user-disabled': 'Esta conta está desativada.',
+};
+
 const Login: React.FC = () => {
-  const { signIn } = useAuth();
+  const { signIn, signOut } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,10 +24,15 @@ const Login: React.FC = () => {
     setError(null);
     setLoading(true);
     try {
-      await signIn(email.trim(), password);
+      const isAdmin = await signIn(email.trim(), password);
+      if (!isAdmin) {
+        await signOut();
+        setError('Esta conta não tem acesso de administrador.');
+        return;
+      }
       navigate('/admin'); // redirect to dashboard
     } catch (err: any) {
-      setError(err?.message || 'Erro ao autenticar');
+      setError(LOGIN_ERRORS[err?.code] || 'Erro ao autenticar. Tente de novo.');
     } finally {
       setLoading(false);
     }

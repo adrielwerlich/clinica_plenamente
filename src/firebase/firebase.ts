@@ -11,7 +11,15 @@ messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
 appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
+// Instância padrão: jogador do Treino Cognitivo (anônimo, Google, e-mail).
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+
+// Instância separada para o admin: sessão própria no navegador, então entrar como admin
+// não derruba a sessão do jogador (e o jogador nunca herda permissões de admin).
+const adminApp = initializeApp(firebaseConfig, 'admin');
+export const adminAuth = getAuth(adminApp);
+export const adminDb = getFirestore(adminApp);
+
 export default app;

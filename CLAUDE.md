@@ -21,7 +21,7 @@ Contexto compartilhado entre chats/sessões (Claude desktop, extensão do VS Cod
 
 ## Plano (1 commit por passo)
 1. [x] Página/rota/menu do jogo (iframe)
-2. [ ] Separar login de jogador do admin
+2. [x] Separar login de jogador do admin
 3. [ ] Login do jogador (Google, e-mail/senha, anônimo) + termos
 4. [ ] Coleções e regras do Firestore (proposta revisada pelo usuário antes do código)
 5. [ ] Ponte JS (.jslib) no Unity para enviar logs ao Firestore
@@ -32,3 +32,4 @@ Contexto compartilhado entre chats/sessões (Claude desktop, extensão do VS Cod
 - 2026-11-05: navbar na rota `/treino-cognitivo` mostra Início, Feed e Blog e esconde o botão Treino Cognitivo (que segue nas outras rotas). Decidido no AI-Game-Lab: hospedagem do build por GitHub Release baixado no deploy (opção B); ponte pela página React (opção A); login do jogador no site; provedores Google, e-mail/senha e anônimo habilitados no Console. Plano completo: docs/sprints/sprint-1-publicacao-site-firestore-login.md no repo do Unity.
 - 2026-11-05: passo 4 do plano do Unity: `src/services/gameBridge.ts` expõe `window.treinoCognitivoBridge` (v1) à página do jogo: estado de login sem uid/e-mail/nome, gravação em `users/{uid}/<colecao>/<doc>` só em coleções permitidas (hoje só `debug`), tempo limite de 15 s, erros só com código curto; `requestSignIn` só aparece quando houver tela de login. Regras do Firestore para `users/` ainda não existem (passo 8: exigir `request.auth.uid == uid` e restringir coleções no servidor).
 - 2026-11-05: login anônimo automático na página do jogo (decisão P8) e regra TEMPORÁRIA em firestore.rules para users/{uid}/debug (teste de fumaça). **Deploy bloqueado até o passo 2b** (ProtectedRoute aceita qualquer usuário logado, inclusive anônimo).
+- 2026-11-05: passo 2b: admin numa instância própria do Firebase (`adminAuth`/`adminDb`, app 'admin'), sessão separada do jogador; `ProtectedRoute` exige a claim `admin` (com carregamento e aviso de erro); fim do `admin_user` no localStorage; Login recusa conta sem claim e traduz erros; Logout só aparece para admin. Depois do deploy o admin precisa entrar de novo uma vez (sessão antiga ficava na instância padrão). Bloqueio de deploy por causa do anônimo: resolvido; falta o admin testar o login real.
