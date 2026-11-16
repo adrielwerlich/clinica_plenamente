@@ -34,8 +34,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Versão do jogo Treino Cognitivo (TAG, ASSET, SHA256): lida antes do build para a página do jogo
+      # usar a tag na URL do iframe (?v=) e o navegador buscar a versão nova sem esperar o cache.
+      - name: Read Treino Cognitivo release pin
+        run: |
+          set -euo pipefail
+          grep -E '^(TAG|ASSET|SHA256)=' .github/treino-cognitivo-release | sed -e 's/[[:space:]]*$//' -e 's/^/TC_/' >> "$GITHUB_ENV"
+
       - name: Build app
         env:
+          REACT_APP_TREINO_COGNITIVO_VERSION: ${{ env.TC_TAG }}
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
           REACT_APP_FIREBASE_AUTH_DOMAIN: ${{ secrets.REACT_APP_FIREBASE_AUTH_DOMAIN }}
           REACT_APP_FIREBASE_PROJECT_ID: ${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }}
@@ -44,6 +52,21 @@ jobs:
           REACT_APP_FIREBASE_APP_ID: ${{ secrets.REACT_APP_FIREBASE_APP_ID }}
           REACT_APP_CLOUDINARY_CLOUD_NAME: ${{ secrets.REACT_APP_CLOUDINARY_CLOUD_NAME }}
         run: npm run build
+
+      # Jogo Treino Cognitivo (build WebGL do Unity, ~64 MB): não fica no git; vem de um GitHub Release
+      # deste repositório, conferido pelo SHA-256 fixado em .github/treino-cognitivo-release.
+      - name: Add Treino Cognitivo game from GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          echo "Treino Cognitivo: $TC_TAG / $TC_ASSET"
+          mkdir -p "$RUNNER_TEMP/tc" build/games/treino-cognitivo
+          gh release download "$TC_TAG" --repo "${{ github.repository }}" --pattern "$TC_ASSET" --dir "$RUNNER_TEMP/tc"
+          echo "$TC_SHA256  $RUNNER_TEMP/tc/$TC_ASSET" | sha256sum -c -
+          unzip -o -q "$RUNNER_TEMP/tc/$TC_ASSET" -d build/games/treino-cognitivo
+          test -f build/games/treino-cognitivo/index.html
+          ls -la build/games/treino-cognitivo/Build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

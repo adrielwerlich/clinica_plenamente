@@ -1,0 +1,5 @@
+# Versão do jogo Treino Cognitivo publicada no site (GitHub Release deste repositório).
+# Para trocar: criar o Release novo com o ZIP, atualizar as três linhas e fazer o deploy.
+TAG=treino-cognitivo-2026-11-16
+ASSET=TreinoCognitivo_WebGL_2026-11-16_site.zip
+SHA256=a89af8e71fb4d9a3058254e95d67c5b24568fd0206d8295e5a80158036af4d51

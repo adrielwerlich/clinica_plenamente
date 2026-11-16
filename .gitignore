@@ -27,3 +27,6 @@ yarn-error.log*
 *-firebase-adminsdk-*.json
 serviceAccount*.json
 service-account*.json
+
+# Build do jogo Treino Cognitivo: vem de um GitHub Release no deploy (ver .github/treino-cognitivo-release)
+/public/games/
